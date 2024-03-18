@@ -832,7 +832,7 @@ class NeuralNetwork(Model):
 
         if graph:
 
-            height = kwargs.get('subplot_height', 3)
+            height = kwargs.get('subplot_height', 4)
             width = kwargs.get('subplot_width', 8)
 
             color = kwargs.get('subplot_color', {
@@ -847,8 +847,8 @@ class NeuralNetwork(Model):
             else:
                 fig, axs = plt.subplots(len(self._metrics) + 2, 1, figsize=(width, height * (len(self._metrics) + 2)))
             
-            title = "Training Metrics (Neural Network)"
-            fig.suptitle(title, fontweight='bold', fontsize=10)
+            title = "Bias-Variance Graph (Neural Network)"
+            fig.suptitle(title, fontweight='bold', fontsize=12)
 
             if not hasattr(axs, '__getitem__'):
                 axs = [axs]
@@ -862,10 +862,16 @@ class NeuralNetwork(Model):
 
                 r2 = r2_score(y_true, y_pred)
 
-                axs[0].set_title(f"R²: {r2:.3f} | cost function [mean square error] (train: {history.history['loss'][-1]:.5f}  val: {history.history['val_loss'][-1]:.5f}  test: {loss[0]:.5f})")
+                axs[0].set_title(
+                    f"R²: {r2:.3f} | cost function [mean square error] (train: {history.history['loss'][-1]:.5f}  val: {history.history['val_loss'][-1]:.5f}  test: {loss[0]:.5f})",
+                    fontsize=12
+                    )
 
             else:
-                axs[0].set_title(f"cost function [categorical crossentropy] (train: {history.history['loss'][-1]:.5f}  val: {history.history['val_loss'][-1]:.5f}  test: {loss[0]:.5f})")
+                axs[0].set_title(
+                    f"cost function [categorical crossentropy] (train: {history.history['loss'][-1]:.5f}  val: {history.history['val_loss'][-1]:.5f}  test: {loss[0]:.5f})",
+                    fontsize=12
+                    )
             
             axs[0].plot(history.history['loss'], linestyle='-', linewidth=2, label = 'Train', color=color['train'])
             axs[0].plot(history.history['val_loss'], linestyle='-', linewidth=1, label = 'Validation', color=color['validation'])
@@ -877,7 +883,7 @@ class NeuralNetwork(Model):
 
 
             for i, metric in enumerate(self._metrics):
-                axs[i+1].set_title(f"{metric.name} (train: {history.history[metric.name][-1]:.5f}  val: {history.history[f'val_{metric.name}'][-1]:.5f}  test: {loss[i+1]:.5f})")
+                axs[i+1].set_title(f"{metric.name} (train: {history.history[metric.name][-1]:.5f}  val: {history.history[f'val_{metric.name}'][-1]:.5f}  test: {loss[i+1]:.5f})", fontsize=12)
                 axs[i+1].plot(history.history[f'{metric.name}'], linestyle='-', linewidth=2, label = 'Train', color=color['train'])
                 axs[i+1].plot(history.history[f'val_{metric.name}'], linestyle='-', linewidth=1, label = 'Validation', color=color['validation'])
                 axs[i+1].axhline(y=loss[i+1], linestyle='--', linewidth=1, label = 'Test', color=color['test'])
@@ -1343,7 +1349,7 @@ class XgBoost(Model):
         history = self.model.evals_result()
 
         if graph:
-            height = kwargs.get('subplot_height', 3)
+            height = kwargs.get('subplot_height', 4)
             width = kwargs.get('subplot_width', 8)
 
             color = kwargs.get('subplot_color', {
@@ -1361,9 +1367,9 @@ class XgBoost(Model):
             if not hasattr(axs, '__getitem__'):
                 axs = [axs]
             
-            title = 'Training Metrics (XG Boost)'
+            title = "Bias-Variance Graph (XG Boost)"
 
-            fig.suptitle(title, fontweight='bold', fontsize=10)
+            fig.suptitle(title, fontweight='bold', fontsize=12)
 
             for i, metric in enumerate(self._metrics):
 
@@ -1373,11 +1379,17 @@ class XgBoost(Model):
 
                     r2 = r2_score(y_true, y_pred)
 
-                    axs[i].set_title(f"R²: {r2:.3f} | {metric} (train: {history['validation_0'][metric][-1]:.5f}  val: {history['validation_2'][metric][-1]:.5f}  test: {history['validation_1'][metric][-1]:.5f})")
+                    axs[i].set_title(
+                        f"R²: {r2:.3f} | {metric} (train: {history['validation_0'][metric][-1]:.5f}  val: {history['validation_2'][metric][-1]:.5f}  test: {history['validation_1'][metric][-1]:.5f})",
+                        fontsize=12
+                        )
 
                 elif i == 0:
                     ## mlogloss == categorical crossentropy (muticlassification problem)
-                    axs[i].set_title(f"cost function [categorical crossentropy] (train: {history['validation_0'][metric][-1]:.5f}  val: {history['validation_2'][metric][-1]:.5f}  test: {history['validation_1'][metric][-1]:.5f})")
+                    axs[i].set_title(
+                        f"cost function [categorical crossentropy] (train: {history['validation_0'][metric][-1]:.5f}  val: {history['validation_2'][metric][-1]:.5f}  test: {history['validation_1'][metric][-1]:.5f})",
+                        fontsize=12
+                        )
 
                 else:
                     axs[i].set_title(f"{metric} (train: {history['validation_0'][metric][-1]:.5f}  val: {history['validation_2'][metric][-1]:.5f}  test: {history['validation_1'][metric][-1]:.5f})")
@@ -1385,7 +1397,7 @@ class XgBoost(Model):
                 axs[i].plot(history['validation_0'][metric], linestyle='-', linewidth=2, label = 'Train', color=color['train'])
                 axs[i].plot(history['validation_2'][metric], linestyle='-', linewidth=1, label = 'Validation', color=color['validation'])
                 axs[i].axhline(y=history['validation_1'][metric][-1], linestyle='--', linewidth=1, label = 'Test', color=color['test'])
-                axs[i].set_xlabel('Epoch')
+                axs[i].set_xlabel('Estimators')
                 axs[i].set_ylabel('Metric')
                 axs[i].legend(loc = 'best')
                 axs[i].xaxis.set_major_locator(MaxNLocator(integer=True))
@@ -2022,7 +2034,7 @@ class KMeans(Model):
             title = '3-Dimensional t-SNE Clusters (K-Means)'
             ax = fig.add_subplot(111, projection='3d')
             ax.set_title(title, fontweight='bold', fontsize=10)
-            ax.set_zlabel('3rd component', fontsize=10)
+            ax.set_zlabel('3rd component', fontsize=12)
 
             for color, i in zip(colors, np.unique(self.clusters)):
 

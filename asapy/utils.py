@@ -3,74 +3,7 @@ from scipy.stats import ttest_ind
 import math
 import json
 import ast
-import asaclient
 
-def prepare_simulation_batch(sim: asaclient.Simulation) -> asaclient.Simulation:
-    """
-    Prepares a simulation by adding specific recorder configurations to the simulation's station subcomponents to run in batch mode.
-
-    Args:
-        sim (Simulation): The simulation instance for which the simulation setup needs to be prepared.
-
-    Returns:
-        Simulation: The updated Simulation instance with the added recorder configurations in its subcomponents.
-    """
-    batch_recorder = {
-            "identifier": "AsaWsDBRecorder@AsaModels",
-            "attributes": {},
-            "subcomponents": {
-                "asaBasicMsgs": [
-                ],
-                "asaCustomMsgs": [
-                    {
-                        "identifier": "AsaCustomMsg11@AsaModels",
-                        "attributes": {}
-                    }
-                ]
-            }
-        }
-    recorders=[batch_recorder, ]
-    sim = dict(sim)
-    sim['station']['subcomponents']['recorders'] = recorders
-    return asaclient.Simulation(**sim)
-
-def prepare_simulation_tacview(sim: asaclient.Simulation) -> asaclient.Simulation:
-    """
-    Prepares a simulation by adding specific recorder configurations to the simulation's station subcomponents to run on Tacview.
-
-    Args:
-        sim (Simulation): The simulation instance for which the simulation setup needs to be prepared.
-
-    Returns:
-        Simulation: The updated Simulation instance with the added recorder configurations in its subcomponents.
-    """
-    tac_recorder = {
-        "identifier": "AsaWsTacviewRecorder@AsaModels",
-        "attributes": {},
-        "subcomponents": {}
-    }
-    recorders=[tac_recorder, ]
-    sim = dict(sim)
-    sim['station']['subcomponents']['recorders'] = recorders
-    return asaclient.Simulation(**sim)
-
-def load_simulation(path: str) -> asaclient.Simulation:
-    """
-    Loads a Simulation object from a JSON file.
-
-    This method accepts a path to a JSON file, reads the content of the file and 
-    creates a Simulation object using the data parsed from the file. 
-
-    Args:
-        path (str): The absolute or relative path to the JSON file to be loaded.
-
-    Returns:
-        Simulation: The Simulation object created from the loaded JSON data.
-    """
-    with open(path, "r") as f:
-        sim_data = json.load(f)
-    simulation = asaclient.Simulation(**sim_data)
-    return simulation
     
 def json_to_df(self, json, id='id') -> pd.DataFrame:
     """

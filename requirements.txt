@@ -11,6 +11,7 @@ sphinxcontrib-jquery==4.1
 sphinxcontrib-jsmath==1.0.1
 sphinxcontrib-qthelp==1.0.7
 sphinxcontrib-serializinghtml==1.1.10
+imblearn
 tqdm==4.65.0
 pandas==1.5.3
 IPython==8.11.0
@@ -33,4 +34,3 @@ pingouin==0.5.4
 optuna==3.5.0
 gower==0.1.2
 xgboost==2.0.3
-git+http://gitlab.asa.dcta.mil.br/asa/asa-client.git@v0.1.0#egg=asa-client
