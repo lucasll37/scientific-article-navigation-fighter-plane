@@ -882,15 +882,27 @@ class NeuralNetwork(Model):
             axs[0].xaxis.set_major_locator(MaxNLocator(integer=True))
 
 
-            for i, metric in enumerate(self._metrics):
-                axs[i+1].set_title(f"{metric.name} (train: {history.history[metric.name][-1]:.5f}  val: {history.history[f'val_{metric.name}'][-1]:.5f}  test: {loss[i+1]:.5f})", fontsize=12)
-                axs[i+1].plot(history.history[f'{metric.name}'], linestyle='-', linewidth=2, label = 'Train', color=color['train'])
-                axs[i+1].plot(history.history[f'val_{metric.name}'], linestyle='-', linewidth=1, label = 'Validation', color=color['validation'])
-                axs[i+1].axhline(y=loss[i+1], linestyle='--', linewidth=1, label = 'Test', color=color['test'])
-                axs[i+1].set_xlabel('Epoch')
-                axs[i+1].set_ylabel('Metric')
-                axs[i+1].legend(loc = 'best')
-                axs[i+1].xaxis.set_major_locator(MaxNLocator(integer=True))
+            if self.task == "regression":
+                for i, metric in enumerate(self._metrics):
+                    axs[i+1].set_title(f"R²: {r2:.3f} | {metric.name} (train: {history.history[metric.name][-1]:.5f}  val: {history.history[f'val_{metric.name}'][-1]:.5f}  test: {loss[i+1]:.5f})", fontsize=12)
+                    axs[i+1].plot(history.history[f'{metric.name}'], linestyle='-', linewidth=2, label = 'Train', color=color['train'])
+                    axs[i+1].plot(history.history[f'val_{metric.name}'], linestyle='-', linewidth=1, label = 'Validation', color=color['validation'])
+                    axs[i+1].axhline(y=loss[i+1], linestyle='--', linewidth=1, label = 'Test', color=color['test'])
+                    axs[i+1].set_xlabel('Epoch')
+                    axs[i+1].set_ylabel('Metric')
+                    axs[i+1].legend(loc = 'best')
+                    axs[i+1].xaxis.set_major_locator(MaxNLocator(integer=True))
+
+            else:
+                for i, metric in enumerate(self._metrics):
+                    axs[i+1].set_title(f"{metric.name} (train: {history.history[metric.name][-1]:.5f}  val: {history.history[f'val_{metric.name}'][-1]:.5f}  test: {loss[i+1]:.5f})", fontsize=12)
+                    axs[i+1].plot(history.history[f'{metric.name}'], linestyle='-', linewidth=2, label = 'Train', color=color['train'])
+                    axs[i+1].plot(history.history[f'val_{metric.name}'], linestyle='-', linewidth=1, label = 'Validation', color=color['validation'])
+                    axs[i+1].axhline(y=loss[i+1], linestyle='--', linewidth=1, label = 'Test', color=color['test'])
+                    axs[i+1].set_xlabel('Epoch')
+                    axs[i+1].set_ylabel('Metric')
+                    axs[i+1].legend(loc = 'best')
+                    axs[i+1].xaxis.set_major_locator(MaxNLocator(integer=True))
 
 
             if self.task == "classification":
