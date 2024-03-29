@@ -8,6 +8,7 @@ os.environ['OUTDATED_IGNORE'] = '1'
 
 import matplotlib.pyplot as plt
 plt.style.use('seaborn-v0_8-paper')
+plt.rcParams['figure.dpi'] = 400
 
 import optuna
 optuna.logging.set_verbosity(optuna.logging.WARNING)
@@ -39,7 +40,7 @@ from matplotlib.ticker import MaxNLocator
 from datetime import datetime
 from joblib import dump, load
 from time import time
-from math import log, floor
+from math import log, ceil
 from functools import wraps
 
 
@@ -574,7 +575,7 @@ class NeuralNetwork(Model):
         super()._preprocess(data, target_one_hot_encoder=True, **kwargs)
         
         self.n_input = self.preprocessed_data['X_train'].shape[1]
-        self.n_neurons = 2 ** floor(log(self.n_input, 2))
+        self.n_neurons = 2 ** ceil(log(self.n_input, 2))
         self.n_output = self.preprocessed_data['y_train'].shape[1]
 
         dict_metrics = {
