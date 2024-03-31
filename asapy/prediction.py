@@ -529,7 +529,7 @@ class NeuralNetwork(Model):
         _optimizer(trial, **kwargs): Defines and runs the optimization trial for hyperparameter tuning.
         hyperparameter_optimization(n_trials=1, info=False, **kwargs): Performs hyperparameter optimization using Optuna.
         load(foldername): Loads the model and preprocessor from the specified folder.
-        fit(return_history=False, graph=True, graph_save_extension=None, verbose=0, **kwargs): Trains the neural network on preprocessed data.
+        fit(return_history=False, graphic=True, graphic_save_extension=None, verbose=0, **kwargs): Trains the neural network on preprocessed data.
         predict(x, verbose=0): Makes predictions using the trained neural network model.
         save(): Saves the model and preprocessor to disk.
     """
@@ -791,15 +791,15 @@ class NeuralNetwork(Model):
         self.model = load_model(f'./saved/{foldername}/model.h5')
 
     
-    def fit(self, return_history=False, graph=False, graph_save_extension=None, verbose=0, **kwargs):
+    def fit(self, return_history=False, graphic=False, graphic_save_extension=None, verbose=0, **kwargs):
         """
         Trains the neural network on preprocessed data. This method supports early stopping and learning rate reduction
         based on the performance on the validation set.
 
         Args:
             return_history (bool, optional): Whether to return the training history object. Defaults to False.
-            graph (bool, optional): Whether to plot training and validation loss and metrics. Defaults to True.
-            graph_save_extension (str, optional): Extension to save the graphs (e.g., 'png', 'svg'). If None, graphs are not saved. Defaults to None.
+            graphic (bool, optional): Whether to plot training and validation loss and metrics. Defaults to True.
+            graphic_save_extension (str, optional): Extension to save the graphics (e.g., 'png', 'svg'). If None, graphics are not saved. Defaults to None.
             verbose (int, optional): Verbosity mode for training progress. Defaults to 0.
             **kwargs: Additional keyword arguments for configuring the training process.
         
@@ -831,7 +831,7 @@ class NeuralNetwork(Model):
 
         loss = self.model.evaluate(self.preprocessed_data['X_test'], self.preprocessed_data['y_test'], verbose=0)
 
-        if graph:
+        if graphic:
 
             height = kwargs.get('subplot_height', 4)
             width = kwargs.get('subplot_width', 8)
@@ -848,7 +848,7 @@ class NeuralNetwork(Model):
             else:
                 fig, axs = plt.subplots(len(self._metrics) + 2, 1, figsize=(width, height * (len(self._metrics) + 2)))
             
-            title = "Bias-Variance Graph (Neural Network)"
+            title = "Bias-Variance Graphic (Neural Network)"
             fig.suptitle(title, fontweight='bold', fontsize=12)
 
             if not hasattr(axs, '__getitem__'):
@@ -926,14 +926,14 @@ class NeuralNetwork(Model):
 
             plt.tight_layout(rect=[0, 0.05, 1, 0.98])
 
-            if graph_save_extension in ['png', 'svg', 'pdf', 'eps']:
+            if graphic_save_extension in ['png', 'svg', 'pdf', 'eps']:
 
                 if not os.path.exists(f'./saved/{self.name}/figures'):
                     os.makedirs(f'./saved/{self.name}/figures')
 
                 plt.savefig(
-                    f'./saved/{self.name}/figures/{title}.{graph_save_extension}',
-                    format=f'{graph_save_extension}'
+                    f'./saved/{self.name}/figures/{title}.{graphic_save_extension}',
+                    format=f'{graphic_save_extension}'
                 )
 
             plt.show()
@@ -1012,7 +1012,7 @@ class XgBoost(Model):
         _optimizer(trial, **kwargs): Defines and runs the optimization trial for hyperparameter tuning.
         hyperparameter_optimization(n_trials=1, info=False, **kwargs): Performs hyperparameter optimization using Optuna.
         load(foldername): Loads the model and preprocessor from the specified folder.
-        fit(return_history=False, graph=True, graph_save_extension=None, verbose=0, **kwargs): Trains the XGBoost model on preprocessed data.
+        fit(return_history=False, graphic=True, graphic_save_extension=None, verbose=0, **kwargs): Trains the XGBoost model on preprocessed data.
         predict(x): Makes predictions using the trained XGBoost model.
         save(): Saves the model and preprocessor to disk.
     """
@@ -1299,15 +1299,15 @@ class XgBoost(Model):
             self.model.load_model(f'./saved/{foldername}/model.bin')
 
     
-    def fit(self, return_history=False, graph=False, graph_save_extension=None, verbose=0, **kwargs):
+    def fit(self, return_history=False, graphic=False, graphic_save_extension=None, verbose=0, **kwargs):
         """
         Trains the XGBoost model on preprocessed data. This method supports early stopping based on the performance
         on the validation set.
 
         Args:
             return_history (bool, optional): Whether to return the training history object. Defaults to False.
-            graph (bool, optional): Whether to plot training and validation loss and metrics. Defaults to True.
-            graph_save_extension (str, optional): Extension to save the graphs (e.g., 'png', 'svg'). If None, graphs are not saved. Defaults to None.
+            graphic (bool, optional): Whether to plot training and validation loss and metrics. Defaults to True.
+            graphic_save_extension (str, optional): Extension to save the graphics (e.g., 'png', 'svg'). If None, graphics are not saved. Defaults to None.
             verbose (int, optional): Verbosity mode for training progress. Defaults to 0.
             **kwargs: Additional keyword arguments for configuring the training process.
         
@@ -1361,7 +1361,7 @@ class XgBoost(Model):
 
         history = self.model.evals_result()
 
-        if graph:
+        if graphic:
             height = kwargs.get('subplot_height', 4)
             width = kwargs.get('subplot_width', 8)
 
@@ -1380,7 +1380,7 @@ class XgBoost(Model):
             if not hasattr(axs, '__getitem__'):
                 axs = [axs]
             
-            title = "Bias-Variance Graph (XG Boost)"
+            title = "Bias-Variance Graphic (XG Boost)"
 
             fig.suptitle(title, fontweight='bold', fontsize=12)
 
@@ -1438,12 +1438,12 @@ class XgBoost(Model):
 
             plt.tight_layout(rect=[0, 0.05, 1, 0.98])
 
-            if graph_save_extension in ['png', 'svg', 'pdf', 'eps']:
+            if graphic_save_extension in ['png', 'svg', 'pdf', 'eps']:
 
                 if not os.path.exists(f'./saved/{self.name}/figures'):
                     os.makedirs(f'./saved/{self.name}/figures')
 
-                plt.savefig(f'./saved/{self.name}/figures/{title}.{graph_save_extension}', format=f'{graph_save_extension}')
+                plt.savefig(f'./saved/{self.name}/figures/{title}.{graphic_save_extension}', format=f'{graphic_save_extension}')
 
             plt.show()
             plt.close()
@@ -1526,7 +1526,7 @@ class DBSCAN(Model):
         hyperparameter_optimization(n_trials=100, info=False, **kwargs): Performs hyperparameter optimization using Optuna.
         load(foldername): Loads the preprocessor, preprocessed data, clusters, and model from the specified folder.
         fit(): Applies the DBSCAN algorithm to the preprocessed data.
-        predict(projection='2d', graph_save_extension=None): Generates and displays a 2D or 3D t-SNE plot of the clusters.
+        predict(projection='2d', graphic_save_extension=None): Generates and displays a 2D or 3D t-SNE plot of the clusters.
         save(): Saves the preprocessor, preprocessed data, clusters, and model to disk.
     """
 
@@ -1712,13 +1712,13 @@ class DBSCAN(Model):
             return self.clusters
 
     
-    def predict(self, projection='2d', graph_save_extension=None):
+    def predict(self, projection='2d', graphic_save_extension=None):
         """
         Projects the clustered data into 2D or 3D space using t-SNE and visualizes the clusters.
 
         Args:
             projection (str, optional): The type of projection for visualization ('2d' or '3d'). Defaults to '2d'.
-            graph_save_extension (str, optional): Extension to save the graphs (e.g., 'png', 'svg'). If None, graphs are not saved. Defaults to None.
+            graphic_save_extension (str, optional): Extension to save the graphics (e.g., 'png', 'svg'). If None, graphics are not saved. Defaults to None.
         """
 
         if projection=='3d' and self.preprocessed_data['X_ohe'].shape[1] < 3:
@@ -1795,12 +1795,12 @@ class DBSCAN(Model):
 
         plt.tight_layout()
 
-        if graph_save_extension in ['png', 'svg', 'pdf', 'eps']:
+        if graphic_save_extension in ['png', 'svg', 'pdf', 'eps']:
 
             if not os.path.exists(f'./saved/{self.name}/figures'):
                 os.makedirs(f'./saved/{self.name}/figures')
 
-            plt.savefig(f'./saved/{self.name}/figures/{title}.{graph_save_extension}', format=f'{graph_save_extension}')
+            plt.savefig(f'./saved/{self.name}/figures/{title}.{graphic_save_extension}', format=f'{graphic_save_extension}')
 
         plt.show()
         plt.close()
@@ -1835,7 +1835,7 @@ class KMeans(Model):
         hyperparameter_optimization(n_trials=100, info=False, **kwargs): Performs hyperparameter optimization using Optuna.
         load(foldername): Loads the preprocessor, preprocessed data, and cluster labels from the specified folder.
         fit(verbose=0): Applies KMeans clustering to the preprocessed dataset.
-        predict(projection='2d', graph_save_extension=None): Projects the clustered data into 2D or 3D space and visualizes the clusters.
+        predict(projection='2d', graphic_save_extension=None): Projects the clustered data into 2D or 3D space and visualizes the clusters.
         save(): Saves the preprocessor, preprocessed data, cluster labels, and model to disk.
     """
 
@@ -2027,13 +2027,13 @@ class KMeans(Model):
             return self.clusters
 
 
-    def predict(self, projection='2d', graph_save_extension=None):
+    def predict(self, projection='2d', graphic_save_extension=None):
         """
         Projects the clustered data into 2D or 3D space using t-SNE and visualizes the clusters.
 
         Args:
             projection (str, optional): The type of projection for visualization ('2d' or '3d'). Defaults to '2d'.
-            graph_save_extension (str, optional): Extension to save the graphs (e.g., 'png', 'svg'). If None, graphs are not saved. Defaults to None.
+            graphic_save_extension (str, optional): Extension to save the graphics (e.g., 'png', 'svg'). If None, graphics are not saved. Defaults to None.
         """
 
         tsne = TSNE(n_components=3 if projection == '3d' else 2, random_state=self.seed)
@@ -2105,12 +2105,12 @@ class KMeans(Model):
 
         plt.tight_layout()
 
-        if graph_save_extension in ['png', 'svg', 'pdf', 'eps']:
+        if graphic_save_extension in ['png', 'svg', 'pdf', 'eps']:
 
             if not os.path.exists(f'./saved/{self.name}/figures'):
                 os.makedirs(f'./saved/{self.name}/figures')
 
-            plt.savefig(f'./saved/{self.name}/figures/{title}.{graph_save_extension}', format=f'{graph_save_extension}')
+            plt.savefig(f'./saved/{self.name}/figures/{title}.{graphic_save_extension}', format=f'{graphic_save_extension}')
 
         plt.show()
         plt.close()
